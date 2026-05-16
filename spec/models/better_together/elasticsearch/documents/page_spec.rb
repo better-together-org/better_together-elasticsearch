@@ -43,9 +43,9 @@ RSpec.describe BetterTogether::Elasticsearch::Documents::Page do
     end
 
     context 'with file-based markdown blocks' do
-      let(:markdown_file_path) { Rails.root.join('spec/fixtures/files/page_markdown_index.md') }
+      let(:tmp_directory) { Pathname.new(Dir.mktmpdir('bt-elasticsearch-page-spec')) }
+      let(:markdown_file_path) { tmp_directory.join('page_markdown_index.md') }
       let(:page) do
-        FileUtils.mkdir_p(markdown_file_path.dirname)
         File.write(markdown_file_path, "# File Search\n\nFile body content that should be indexed.")
 
         build(
@@ -63,7 +63,7 @@ RSpec.describe BetterTogether::Elasticsearch::Documents::Page do
       end
 
       after do
-        FileUtils.rm_f(markdown_file_path)
+        FileUtils.remove_entry(tmp_directory)
       end
 
       it 'indexes plain text extracted from markdown files' do

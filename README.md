@@ -53,10 +53,30 @@ The concern is included into the host model during `to_prepare`, so it can safel
 
 ## Testing
 
-Run the extension specs through the repo's compose harness after adding the optional gem to your bundle:
+This repo is standalone, but it boots against a local `better_together` checkout for the
+host models, factories, and Rails test environment.
+
+By default it expects the Community Engine checkout at:
 
 ```bash
-bin/dc-run bundle exec prspec gems/better_together-elasticsearch/spec
-SEARCH_BACKEND=elasticsearch ENABLE_ELASTICSEARCH_TESTS=true bin/dc-run \
-  bundle exec prspec gems/better_together-elasticsearch/spec/integration
+../community-engine-rails
+```
+
+Override that path when needed:
+
+```bash
+BETTER_TOGETHER_PATH=/path/to/community-engine-rails
+```
+
+Run the extension specs from this repo:
+
+```bash
+bundle exec rspec spec
+```
+
+Run the Elasticsearch-backed integration slice with the backend enabled:
+
+```bash
+SEARCH_BACKEND=elasticsearch ENABLE_ELASTICSEARCH_TESTS=true \
+  bundle exec rspec spec/services/better_together/search/elasticsearch_backend_search_matching_spec.rb
 ```
