@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
-require File.expand_path('../../lib/better_together/version', __dir__)
+better_together_path = ENV.fetch(
+  'BETTER_TOGETHER_PATH',
+  File.expand_path('../community-engine-rails', __dir__)
+)
+
+require File.expand_path('lib/better_together/version', better_together_path)
 
 Gem::Specification.new do |spec|
   spec.name = 'better_together-elasticsearch'
